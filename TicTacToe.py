@@ -19,7 +19,7 @@ def winner(board):
 	return 0
 
 def draw(board):
-	return not valid_moves(board) and not winner(board) == 0
+	return not valid_moves(board) and winner(board) == 0
 
 def update_board(board, move, player):
 

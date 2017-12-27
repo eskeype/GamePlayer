@@ -1,9 +1,10 @@
 from TicTacToe import *
+import random
 
 class PerfectGamePlayer:
 	def __init__(self):
 		self.game_tree = {}
-	def make_move(self, player, board):
+	def move_choice(self, player, board):
 		tup_board = tuple(board)
 
 		if tup_board not in self.game_tree:
@@ -19,11 +20,11 @@ class PerfectGamePlayer:
 			tup_move_board = tuple(move_board)
 
 			if self.game_tree[tup_move_board] == player:
-				print("i already won!\n")
+				#print("i already won!\n")
 				return move
 
 			if self.game_tree[tup_move_board] == 0:
-				print("MOVE CANDIDATE: {}\n".format(move))
+				#print("MOVE CANDIDATE: {}\n".format(move))
 				count+=1
 				if random.randint(1,count)==1:
 					out_move = move
@@ -31,38 +32,34 @@ class PerfectGamePlayer:
 		return out_move
 
 
-def position_favors(board, player, cache):
+def position_favors(board, player, game_tree):
 
-	if board in cache:
-		return cache[board]
+	if board in game_tree:
+		return game_tree[board]
 
-	outcome = winner[board]
+	outcome = winner(board)
 	if outcome!=0:
-		cache[board] = outcome
+		game_tree[board] = outcome
 		return outcome
 
 	if draw(board):
-		cache[board] = 0
+		game_tree[board] = 0
 		return 0
 
+	losing = True
 	for move in valid_moves(board):
-		board_list = list(board)
-		board_list[move] = player
-		new_board = tuple(board_list)
+		new_board = update_board(board, move, player)
 
-		losing = True
-
-		if position_favors(new_board,3-player, cache)==player:
-			cache[board] = player
+		if position_favors(new_board,3-player, game_tree)==player:
+			game_tree[board] = player
 			return player
 
-		elif position_favors(new_board, 3-player, cache)!=(3-player):
+		elif position_favors(new_board, 3-player, game_tree)!=(3-player):
 			losing = False
 
-	cache[board] = (3-player) if losing else 0
-	return cache[board]
+	game_tree[board] = (3-player) if losing else 0
+	return game_tree[board]
 
-print(__name__)
 
 if __name__ == "__main__":
 	game_tree = {}

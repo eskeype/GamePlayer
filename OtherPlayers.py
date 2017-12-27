@@ -12,4 +12,17 @@ class HumanGamePlayer:
 	def __init__(self):
 		pass
 	def move_choice(self, player, board):
-		return int(raw_input("Player {}, input your move: ".format(player)))
+		
+		while True:
+
+			try:
+				move = int(raw_input("Player {}, input your move: ".format(player)))
+				if move not in valid_moves(board):
+					print("{} is not a valid move!\n".format(move))
+				else:
+					break
+
+			except ValueError:
+				print("Please enter an integer\n")
+		return move
+

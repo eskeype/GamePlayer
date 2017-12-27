@@ -1,5 +1,6 @@
 from TicTacToe import *
 from OtherPlayers import *
+from PerfectPlayer import *
 
 class Match:
 	def __init__(self, player1, player2):
@@ -33,12 +34,13 @@ class Match:
 		return 0
 
 if __name__ == "__main__":
-	player1 = RandomGamePlayer()
-	player2 = HumanGamePlayer()
+	player1 = PerfectGamePlayer()
+	player2 = PerfectGamePlayer()
 
 	match = Match(player1,player2)
+
+	match.play()
 	#scoreboard = {0:0, 1:0, 2:0}
 	#for i in range(1000):
-	#	scoreboard[game.play()]+=1
-	match.play()
-	#print(scoreboard)
+	#	scoreboard[match.play(False)] +=1
+	#print scoreboard
