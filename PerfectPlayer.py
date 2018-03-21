@@ -30,6 +30,8 @@ class PerfectGamePlayer:
 					out_move = move
 
 		return out_move
+	def train(self, winner):
+		pass
 
 
 def position_favors(board, player, game_tree):
@@ -59,6 +61,8 @@ def position_favors(board, player, game_tree):
 
 	game_tree[board] = (3-player) if losing else 0
 	return game_tree[board]
+
+ #Also build "first winning move" perfect game player instead of forking
 
 
 if __name__ == "__main__":

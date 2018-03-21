@@ -2,9 +2,12 @@ from TicTacToe import *
 from OtherPlayers import *
 from PerfectPlayer import *
 
+#MAKE THIS RETURN LIST OF MOVES MADE
+
 class Match:
 	def __init__(self, player1, player2):
 		self.players = {1:player1, 2:player2}
+		#self.move_histories = {1:[], 2:[]}
 
 	def play(self,verbose=True):
 		board = tuple([0]*9)
@@ -16,7 +19,10 @@ class Match:
 		
 		while not draw(board):
 			
-			board = update_board(board, self.players[current_player].move_choice(current_player, board), current_player)
+			player_move = self.players[current_player].move_choice(current_player, board)
+			#self.move_histories[current_player].append((board, player_move))
+
+			board = update_board(board, player_move, board, current_player)
 
 			if verbose:
 				print(board_to_string(board))
@@ -25,17 +31,22 @@ class Match:
 			if is_winner(current_player,board):
 				if verbose:
 					print("Player {} won!".format(current_player))
+
+				self.players[current_player].train(current_player)
+				self.players[3 - current_player].train(current_player)
 				return current_player
 			
 			current_player = 3 - current_player
 
 		if verbose:
 			print("Draw game!")
+
+		
 		return 0
 
 if __name__ == "__main__":
 	player1 = PerfectGamePlayer()
-	player2 = PerfectGamePlayer()
+	player2 = RandomGamePlayer()
 
 	match = Match(player1,player2)
 

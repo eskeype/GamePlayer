@@ -58,5 +58,8 @@ class RandomizedCollection:
         :rtype: int
         """
         return random.choice(self._element_list)
+
+    def empty(self):
+        return self._element_list.empty()
 		
 
