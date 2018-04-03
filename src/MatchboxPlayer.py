@@ -2,7 +2,7 @@
 from RandomizedCollection import RandomizedCollection
 import random
 from TicTacToe import *
-import CPickle as pickle
+import cPickle as pickle
 # CPickle apparently works much faster than regular pickle on python 2.x. Python 3 auto uses it
 from datetime import datetime
 
