@@ -3,7 +3,7 @@ from RandomizedCollection import RandomizedCollection
 import random
 from TicTacToe import *
 import cPickle as pickle
-# CPickle apparently works much faster than regular pickle on python 2.x. Python 3 auto uses it
+# cPickle apparently works much faster than regular pickle on python 2.x. Python 3 auto uses it
 from datetime import datetime
 
 #dictionary: board represntation -> randomized collection (matchbox)
@@ -59,7 +59,7 @@ class MatchboxGamePlayer:
 		pickle.dump( move_distribution, open( "move_distribution.p", "wb" ) )
 
 
-		out_file.close()
+		#out_file.close()
 
 
 
