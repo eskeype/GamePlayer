@@ -2,19 +2,29 @@
 from RandomizedCollection import RandomizedCollection
 import random
 from TicTacToe import *
+import pickle
+from datetime import datetime
 
 #dictionary: board represntation -> randomized collection (matchbox)
 
 class MatchboxGamePlayer:
 	def __init__(self, player_id, move_distribution = {}):
-		self.move_distribution = move_distribution
+		if type(move_distribution) is str:
+			#treat it like a filename 
+			 move_distribution_file = open(move_distribution, 'r')
+			 self.move_distribution = pickle.load(move_distribution_file)
+			 move_distribution_file.close()
+
+		else: #it should be a dictionary	
+			self.move_distribution = move_distribution
+
 		self.move_history = [] # list of (board, move I made)
 		self.player_id = player_id
 
-	def make_choice(self, player,board):
+	def move_choice(self, player,board):
 		tup_board = tuple(board)
 		if tup_board not in self.move_distribution:
-			distribution = RandomCollection()
+			distribution = RandomizedCollection()
 			
 			valid_moves_list = valid_moves(board)
 
@@ -39,9 +49,12 @@ class MatchboxGamePlayer:
 				self.move_distribution[move[0]].insert(move[1])
 
 		elif winner == 3 - self.player_id:
-			#punish (kinky)
+			#punish 
 			for move in self.move_history:
 				self.move_distribution[move[0]].remove(move[1])
+		out_file = open("move_distribition"+str(datetime.now())+".pickle", "w")
+		pickle.dump(self.move_distribution, out_file)
+		out_file.close()
 
 
 

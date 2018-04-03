@@ -7,6 +7,8 @@ class RandomGamePlayer:
 		pass
 	def move_choice(self, player,board):
 		return random.choice(valid_moves(board))
+	def train(self, winner):
+		pass
 
 class HumanGamePlayer:
 	def __init__(self):
@@ -25,4 +27,5 @@ class HumanGamePlayer:
 			except ValueError:
 				print("Please enter an integer\n")
 		return move
-
+	def train(self, winner):
+		pass

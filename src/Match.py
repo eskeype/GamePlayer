@@ -1,7 +1,7 @@
 from TicTacToe import *
 from OtherPlayers import *
 from PerfectPlayer import *
-
+from MatchboxPlayer import *
 #MAKE THIS RETURN LIST OF MOVES MADE
 
 class Match:
@@ -22,7 +22,7 @@ class Match:
 			player_move = self.players[current_player].move_choice(current_player, board)
 			#self.move_histories[current_player].append((board, player_move))
 
-			board = update_board(board, player_move, board, current_player)
+			board = update_board(board, player_move, current_player)
 
 			if verbose:
 				print(board_to_string(board))
@@ -46,7 +46,7 @@ class Match:
 
 if __name__ == "__main__":
 	player1 = PerfectGamePlayer()
-	player2 = RandomGamePlayer()
+	player2 = MatchboxGamePlayer(2)
 
 	match = Match(player1,player2)
 
