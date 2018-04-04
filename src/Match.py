@@ -47,7 +47,7 @@ class Match:
 		
 		return 0
 
-FILENAME = "move_distribution.py"
+FILENAME = "move_distribution.pickle"
 
 if __name__ == "__main__":
 
