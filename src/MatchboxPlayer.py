@@ -2,7 +2,8 @@
 from RandomizedCollection import RandomizedCollection
 import random
 from TicTacToe import *
-import pickle
+import cPickle as pickle
+# cPickle apparently works much faster than regular pickle on python 2.x. Python 3 auto uses it
 from datetime import datetime
 
 #dictionary: board represntation -> randomized collection (matchbox)
@@ -11,9 +12,10 @@ class MatchboxGamePlayer:
 	def __init__(self, player_id, move_distribution = {}):
 		if type(move_distribution) is str:
 			#treat it like a filename 
-			 move_distribution_file = open(move_distribution, 'r')
-			 self.move_distribution = pickle.load(move_distribution_file)
-			 move_distribution_file.close()
+			 #move_distribution_file = open(move_distribution, 'r')
+			 #self.move_distribution = pickle.load(move_distribution_file)
+			 #move_distribution_file.close()
+			self.move_distribution = pickle.load( open( "move_distribution.p", "rb" ) )
 
 		else: #it should be a dictionary	
 			self.move_distribution = move_distribution
@@ -52,9 +54,12 @@ class MatchboxGamePlayer:
 			#punish 
 			for move in self.move_history:
 				self.move_distribution[move[0]].remove(move[1])
-		out_file = open("move_distribition"+str(datetime.now())+".pickle", "w")
-		pickle.dump(self.move_distribution, out_file)
-		out_file.close()
+		#out_file = open("move_distribition"+str(datetime.now())+".pickle", "w")
+		#pickle.dump(self.move_distribution, out_file)
+		pickle.dump( move_distribution, open( "move_distribution.p", "wb" ) )
+
+
+		#out_file.close()
 
 
 
