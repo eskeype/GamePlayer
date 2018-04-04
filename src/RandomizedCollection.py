@@ -60,6 +60,9 @@ class RandomizedCollection:
         return random.choice(self._element_list)
 
     def empty(self):
-        return self._element_list.empty()
+        return len(self._element_list) == 0
+
+    def __str__(self):
+        return str(self._element_list)
 		
 
