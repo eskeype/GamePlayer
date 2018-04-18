@@ -10,15 +10,11 @@ The intent of this platform is to have it be a convenient way for people to trai
 
 # Specific intended changes for GamePlayer (Ordered by priority)
 
-- Redo design for PerfectGamePlayer. It should be possible to store the game tree for a particular game.
+- Redo design for PerfectGamePlayer. It should be possible to store the game tree for a particular game - PERFECT PLAYER IS CURRENTLY BROKEN, FIX UNDERWAY
 
-- Include driver scripts for training, validation (without training), and spectating particular games
+- Include driver scripts for training, validation (without training), and spectating particular games - IN PROGRESS
 
-- Users should be able to use these with whatever game player they choose, in accordance with the Open/closed principle
-
-- Shouldn't be limited to TicTacToe. Game details should be configurable. Perhaps let game details be a singleton object used by the match object
-
-- Also, the selection of functions that I use for TicTacToe isn't very well organized. We should come up with a cleaner interface
+- Support getting basic analytics on training speed
 
 # Longterm additions
 
