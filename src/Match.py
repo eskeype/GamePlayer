@@ -1,81 +1,59 @@
-from TicTacToe import *
-from OtherPlayers import *
-from PerfectPlayer import *
-from MatchboxPlayer import *
-import pickle
-import os.path
-#MAKE THIS RETURN LIST OF MOVES MADE
 
 class Match:
-	def __init__(self, player1, player2):
-		self.players = {1:player1, 2:player2}
-		#self.move_histories = {1:[], 2:[]}
+	def __init__(self, game, player1, player2):
 
-	def play(self,verbose=True):
-		board = tuple([0]*9)
+		self.game = game
+
+		player1.turn = 1
+		player2.turn = 2
+
+		player1.game = game
+		player2.game = game
+
+		self.players = {1:player1, 2:player2}
+
+
+	def play(self, verbose = True, finalize = True):
+
 		current_player = 1
 
 		if verbose:
-			print(board_to_string(board))
-			print("\n")
+			print( "{}\n".format(self.game.board_to_string()))
 		
-		while not draw(board):
+		while not (self.game.draw() or self.game.winner() != 0):
 			
-			player_move = self.players[current_player].move_choice(current_player, board)
-			#print("MOVE MADE: " + str(player_move))
-			#self.move_histories[current_player].append((board, player_move))
-
-			board = update_board(board, player_move, current_player)
+			self.players[current_player].play_move()
 
 			if verbose:
-				print(board_to_string(board))
-				print("\n")
-
-			if is_winner(current_player,board):
-				if verbose:
-					print("Player {} won!".format(current_player))
-
-				self.players[current_player].train(current_player)
-				self.players[3 - current_player].train(current_player)
-				return current_player
+				print( "{}\n".format(self.game.board_to_string()))
 			
 			current_player = 3 - current_player
 
-		if verbose:
-			print("Draw game!")
+		
+		if finalize:
+			
+			# Finalization methods are called here
+			# These can be used to train learning game players
+			# or do other bookkeeping at the end of a game
 
+			# Finalization can be skipped, so that if a Match
+			# is being played for validation, the training method
+			# does not need to be called
+
+			self.players[1].finalize()
+			self.players[2].finalize()
+
+		winner = self.game.winner()
+
+
+		if winner != 0:
+			if verbose:
+				print("Player {} won!\n".format(winner))
+			return winner
+
+		elif verbose:
+			#draw game
+			print("Draw Game!\n")
 		
 		return 0
-
-FILENAME = "move_distribution.pickle"
-
-if __name__ == "__main__":
-
-
-	if os.path.isfile(FILENAME):
-		move_distribution_file = open(FILENAME,"r")
-		move_distribution = pickle.load(move_distribution_file)
-		move_distribution_file.close()
-	else:
-		move_distribution = {}
-
-	n = int(raw_input("Input a number of training games: "))
-
-	wins = 0
-	draws = 0
-	for i in range(n):
-
-		player2 = RandomGamePlayer()
-		player1 = MatchboxGamePlayer(1,move_distribution)
-
-		match = Match(player1,player2)
-
-		wins += 1 if match.play(False) == 1 else 0
-		draws += 1 if match.play(False) == 0 else 0
-
-	print("Wins: {} Losses: {} Draws: {}".format(wins, n - wins - draws, draws))
-
-	output_file = open(FILENAME,"w")
-	pickle.dump(move_distribution, output_file)
-	output_file.close()
 
