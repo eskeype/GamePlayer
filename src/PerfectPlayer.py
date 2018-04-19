@@ -1,66 +1,81 @@
-from TicTacToe import *
+from GamePlayer import GamePlayer
 import random
 
-class PerfectGamePlayer:
-	def __init__(self):
-		self.game_tree = {}
-	def move_choice(self, player, board):
-		tup_board = tuple(board)
+class PerfectGamePlayer(GamePlayer):
+	def __init__(self, game_tree = {}):
+		
+		self.turn = None
+		self.game = None
+		self.game_tree = game_tree
 
-		if tup_board not in self.game_tree:
-			position_favors(tup_board,player,self.game_tree)
+	def play_move(self):
 
-		current_valid_moves = valid_moves(board)
-		out_move = current_valid_moves[0]
 		count = 0
-		#reservoir sampling
-		for move in current_valid_moves:
-			move_board = list(tup_board)
-			move_board[move] = player
-			tup_move_board = tuple(move_board)
 
-			if self.game_tree[tup_move_board] == player:
-				#print("i already won!\n")
-				return move
+		# reservoir sampling
+		# If board_tuple.valid_moves() is empty, something is wrong
+		candidate_move = None
 
-			if self.game_tree[tup_move_board] == 0:
-				#print("MOVE CANDIDATE: {}\n".format(move))
-				count+=1
-				if random.randint(1,count)==1:
-					out_move = move
+		for move in self.game.valid_moves():
+				
+			candidate_game = self.game.clone()
+			candidate_game.update_board(self.turn, move)
 
-		return out_move
-	def train(self, winner):
-		pass
+			favors = position_favors(3 - self.turn, candidate_game, self.game_tree)
+
+			if favors == self.turn:
+				self.game.update_board(self.turn, move)
+				return
+
+			elif favors == 0:
+				count += 1
+				if random.randint(1,count) == 1:
+					candidate_move = move
+
+		#This would be a good time to assert that candidate_move is not null
+		self.game.update_board(self.turn, candidate_move)
 
 
-def position_favors(board, player, game_tree):
+def position_favors(player, game, game_tree):
+	
+	if game in game_tree:
+		return game_tree[game]
 
-	if board in game_tree:
-		return game_tree[board]
+	winner = game.winner()
 
-	outcome = winner(board)
-	if outcome!=0:
-		game_tree[board] = outcome
-		return outcome
+	if winner != 0:
+		game_tree[game] = winner
+		return winner
 
-	if draw(board):
-		game_tree[board] = 0
+	if game.draw():
+		game_tree[game] = 0
 		return 0
 
-	losing = True
-	for move in valid_moves(board):
-		new_board = update_board(board, move, player)
+	# check all of the child cases
+	# if they are all losing positions, this position is as well
+	# if any of them are winning positions, this is a winning position
+	other_player = 3 - player
+	lose_count = 0
+	for move in game.valid_moves():
+		candidate_game = game.clone()
+		candidate_game.update_board(player, move)
 
-		if position_favors(new_board,3-player, game_tree)==player:
-			game_tree[board] = player
+		favors = position_favors(other_player, candidate_game, game_tree) 
+
+		if favors == player:
+			game_tree[game] = player
 			return player
+		
+		elif favors == other_player:
+			lose_count += 1
 
-		elif position_favors(new_board, 3-player, game_tree)!=(3-player):
-			losing = False
 
-	game_tree[board] = (3-player) if losing else 0
-	return game_tree[board]
+	if lose_count == len(game.valid_moves()):
+		game_tree[game] = other_player
+		return other_player
+
+	game_tree[game] = 0
+	return 0
 
  #Also build "first winning move" perfect game player instead of forking
 
