@@ -1,4 +1,4 @@
-ddd# GamePlayer
+# GamePlayer
 
 This project was made in collaboration with [pijel](https://github.com/pijel).
 
@@ -9,8 +9,6 @@ Currently this platform contains two different AI Game Players - a perfect Tic T
 The intent of this platform is to have it be a convenient way for people to train and test out AI's for simple two player games like Tic Tac Toe, and other games in the future as well.
 
 # Specific intended changes for GamePlayer (Ordered by priority)
-
-- Redo design for PerfectGamePlayer. It should be possible to store the game tree for a particular game - PERFECT PLAYER IS CURRENTLY BROKEN, FIX UNDERWAY
 
 - Include driver scripts for training, validation (without training), and spectating particular games - IN PROGRESS
 
