@@ -16,7 +16,7 @@ class PerfectGamePlayer(GamePlayer):
 		# If board_tuple.valid_moves() is empty, something is wrong
 		candidate_move = None
 
-		for move in self.game.valid_moves():
+		for move in self.game.valid_moves(self.turn):
 				
 			candidate_game = self.game.clone()
 			candidate_game.update_board(self.turn, move)
@@ -56,7 +56,7 @@ def position_favors(player, game, game_tree):
 	# if any of them are winning positions, this is a winning position
 	other_player = 3 - player
 	lose_count = 0
-	for move in game.valid_moves():
+	for move in game.valid_moves(player):
 		candidate_game = game.clone()
 		candidate_game.update_board(player, move)
 
@@ -70,7 +70,7 @@ def position_favors(player, game, game_tree):
 			lose_count += 1
 
 
-	if lose_count == len(game.valid_moves()):
+	if lose_count == len(game.valid_moves(player)):
 		game_tree[game] = other_player
 		return other_player
 

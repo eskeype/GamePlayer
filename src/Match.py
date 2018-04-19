@@ -4,11 +4,10 @@ class Match:
 
 		self.game = game
 
-		player1.turn = 1
-		player2.turn = 2
 
-		player1.game = game
-		player2.game = game
+		player1.match_initializer(1, game)
+
+		player2.match_initializer(2, game)
 
 		self.players = {1:player1, 2:player2}
 

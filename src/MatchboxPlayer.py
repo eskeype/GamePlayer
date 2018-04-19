@@ -20,7 +20,7 @@ class MatchboxGamePlayer(GamePlayer):
 			
 			matchbox = RandomizedCollection()
 			
-			valid_moves_list = game_clone.valid_moves()
+			valid_moves_list = game_clone.valid_moves(self.turn)
 
 			#insert beads into matchbox
 			for i in valid_moves_list:
@@ -31,7 +31,7 @@ class MatchboxGamePlayer(GamePlayer):
 
 
 		if self.move_distribution[game_clone].empty():
-			move = random.choice(game_clone.valid_moves())
+			move = random.choice(game_clone.valid_moves(self.turn))
 
 		else:
 			move = self.move_distribution[game_clone].getRandom()

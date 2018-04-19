@@ -1,9 +1,10 @@
-class TicTacToe:
+from Game import Game
+class TicTacToe(Game):
 
 	def __init__(self):
 		self.board = [0 for i in range(9)]
 
-	def valid_moves(self):
+	def valid_moves(self, player):
 		return [i for i,mark in enumerate(self.board) if mark==0]
 
 	def winner(self):
@@ -40,7 +41,7 @@ class TicTacToe:
 		Returns true when a winner has not been determined and no more valid moves remain
 		"""
 		
-		return not self.valid_moves() and self.winner() == 0
+		return not self.valid_moves(1) and self.winner() == 0
 
 	def update_board(self, player, move):
 
